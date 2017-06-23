@@ -1,9 +1,9 @@
-﻿@charset "utf-8";
+@charset "utf-8";
 /* -----------H-ui前端框架-------------
-* H-ui.css v3.0.4
+* H-ui.css v3.1.4
 * http://www.h-ui.net/
 * Created & Modified by guojunhui
-* Date modified 2017.03.07
+* Date modified 2017.06.23
 *
 * Copyright 2013-2017 北京颖杰联创科技有限公司 All rights reserved.
 * Licensed under MIT license.
@@ -698,6 +698,37 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 	.visible-print-inline-block {display: inline-block !important}
 	.hidden-print {display: none !important}
 }
+/*最外层*/
+.containBox {background-color:#fff;position:relative;z-index:100;zoom:1;-moz-transition:-moz-transform .2s ease-out;-webkit-transition:-webkit-transform .2s ease-out;-o-transition:-o-transform .2s ease-out;transition:transform .2s ease-out;top:0px;}
+.sideBox {display:none}
+	.containBox-bg{ display: none}
+@media (max-width:767px) {
+    body,.content {font-size:16px;line-height:1.6}
+	html,body{ overflow:hidden; height: 100%}
+	.containBox{ position:fixed; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden;
+	}
+		.containBox-bg{position:fixed;width:100%;top:0;left:0; display: block;z-index:2000}
+    /*隐藏的菜单*/
+    .sideBox {position:absolute;display:block;z-index:99;right:0;top:0;bottom:0;width:250px;background-color:#303135}
+    .sideBox .navbar-nav {display:block}
+    .sideBox .navbar-nav li {border-bottom:1px solid #222;display:block}
+    .sideBox .navbar-nav a {color:#fff;display:block;padding-left:20px;padding:10px 30px;}
+    .sideBox .navbar-nav a:hover {text-decoration:none;}
+    .Hui-wraper {width:auto;padding:0 10px}
+    .AD-img img {width:100%;height:auto}
+	body.sideBox-open .containBox{
+			-moz-transform: translate3d(-250px,0,0);
+		-webkit-transform: translate3d(-250px,0,0);
+				transform: translate3d(-250px,0,0);
+				backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+			-moz-backface-visibility: hidden;
+			-ms-backface-visibility: hidden;
+	}
+	.wap-container{ height: 100%;width: 100%;min-width: 320px;max-width: 640px;
+     overflow: auto;}
+	body.sideBox-open .containBox-bg{bottom:0;right:0;}
+}
 /*2.3 常用布局
 	Name:			style_Layout
 	Explain:		左右两栏|左中右三栏|上中下
@@ -1230,31 +1261,34 @@ table.dataTable thead .sorting_desc {background-image:url(../images/dataTable/so
 </div>
 */
 @media (max-width: 767px) {
-	table-responsive {width: 100%;margin-bottom: 15px;overflow-x: scroll;overflow-y: hidden;border: 1px solid #ddd;-ms-overflow-style: -ms-autohiding-scrollbar;-webkit-overflow-scrolling: touch}
-	table-responsive > .table {margin-bottom: 0}
-	table-responsive > .table > thead > tr > th,
-	table-responsive > .table > tbody > tr > th,
-	table-responsive > .table > tfoot > tr > th,
-	table-responsive > .table > thead > tr > td,
-	table-responsive > .table > tbody > tr > td,
-	table-responsive > .table > tfoot > tr > td {white-space: nowrap}
-	table-responsive > .table-bordered {border: 0}
-	table-responsive > .table-bordered > thead > tr > th:first-child,
-	table-responsive > .table-bordered > tbody > tr > th:first-child,
-	table-responsive > .table-bordered > tfoot > tr > th:first-child,
-	table-responsive > .table-bordered > thead > tr > td:first-child,
-	table-responsive > .table-bordered > tbody > tr > td:first-child,
-	table-responsive > .table-bordered > tfoot > tr > td:first-child {border-left: 0}
-	table-responsive > .table-bordered > thead > tr > th:last-child,
-	table-responsive > .table-bordered > tbody > tr > th:last-child,
-	table-responsive > .table-bordered > tfoot > tr > th:last-child,
-	table-responsive > .table-bordered > thead > tr > td:last-child,
-	table-responsive > .table-bordered > tbody > tr > td:last-child,
-	table-responsive > .table-bordered > tfoot > tr > td:last-child {border-right: 0}
-	table-responsive > .table-bordered > tbody > tr:last-child > th,
-	table-responsive > .table-bordered > tfoot > tr:last-child > th,
-	table-responsive > .table-bordered > tbody > tr:last-child > td,
-	table-responsive > .table-bordered > tfoot > tr:last-child > td {border-bottom: 0}
+	/*.table-responsive {width: 100%;margin-bottom: 15px;overflow-x: scroll;overflow-y: hidden;border: 1px solid #ddd;-ms-overflow-style: -ms-autohiding-scrollbar;-webkit-overflow-scrolling: touch}
+	.table-responsive > .table {margin-bottom: 0}
+	.table-responsive > .table > thead > tr > th,
+	.table-responsive > .table > tbody > tr > th,
+	.table-responsive > .table > tfoot > tr > th,
+	.table-responsive > .table > thead > tr > td,
+	.table-responsive > .table > tbody > tr > td,
+	.table-responsive > .table > tfoot > tr > td {white-space: nowrap}
+	.table-responsive > .table-bordered {border: 0}
+	.table-responsive > .table-bordered > thead > tr > th:first-child,
+	.table-responsive > .table-bordered > tbody > tr > th:first-child,
+	.table-responsive > .table-bordered > tfoot > tr > th:first-child,
+	.table-responsive > .table-bordered > thead > tr > td:first-child,
+	.table-responsive > .table-bordered > tbody > tr > td:first-child,
+	.table-responsive > .table-bordered > tfoot > tr > td:first-child {border-left: 0}
+	.table-responsive > .table-bordered > thead > tr > th:last-child,
+	.table-responsive > .table-bordered > tbody > tr > th:last-child,
+	.table-responsive > .table-bordered > tfoot > tr > th:last-child,
+	.table-responsive > .table-bordered > thead > tr > td:last-child,
+	.table-responsive > .table-bordered > tbody > tr > td:last-child,
+	.table-responsive > .table-bordered > tfoot > tr > td:last-child {border-right: 0}
+	.table-responsive > .table-bordered > tbody > tr:last-child > th,
+	.table-responsive > .table-bordered > tfoot > tr:last-child > th,
+	.table-responsive > .table-bordered > tbody > tr:last-child > td,
+	.table-responsive > .table-bordered > tfoot > tr:last-child > td {border-bottom: 0}
+	*/
+	.table-responsive th,.table-responsive td{ display: block;width: 100%!important;box-sizing: border-box;}
+
 }
 
 /*3.4 表单
@@ -1785,6 +1819,7 @@ squid.swing.jselect()
 	-webkit-box-shadow:0 1px 2px rgba(0, 1, 1, 0.2);
 	box-shadow:0 1px 2px rgba(0, 1, 1, 0.2);
 	box-sizing:border-box;
+
 	border:solid 1px #d0d0d0}
 		.select-item {margin: 0;padding: 0}
 		.select-option {background:#fff;line-height:34px;text-align:left;white-space:nowrap; cursor:pointer; border-bottom:1px solid #f2f2f2; padding:0 10px}
@@ -1819,14 +1854,16 @@ squid.swing.jselect()
 .input-text[type="number"]{width:80px}
 
 /*3.4.5 spinner 控件*/
-.spinner{display:block;overflow:hidden;width:100px; position:relative; padding-left:31px; padding-right:31px;}
-.spinner .amount{ width:100%;text-align:center}
-.spinner a{display:inline-block; position:absolute;top:0; bottom:0; height:auto; line-height:100%;width:29px;border:1px solid #d9d9d9;background-color:#f7f7f7;cursor:pointer;outline:0; text-decoration:none; text-align:center; font-size:16px}
+.spinner{display:block;overflow:hidden;width:100px; position:relative; padding-left:29px; padding-right:29px;}
+.spinner .input-text{height:30px; text-align:center; width:100%}
+.spinner a{display:inline-block; position:absolute;top:0; bottom:0; height:28px;line-height:28px;width:28px;cursor:pointer;outline:0; text-decoration:none;text-align:center;font-size:16px;border:1px solid #ddd;background-color:#f7f7f7;}
 .spinner a:hover{ text-decoration:none}
-.spinner a i{ font-style:normal; line-height:28px; font-size:16px;}
-.spinner a.disDe,.spinner a.disIn{ color:#999; cursor:not-allowed}
-.spinner a.disDe,.spinner a.decrease{ left:0}
-.spinner a.increase,.spinner a.disIn{ right:0}
+.spinner a i{ font-style:normal;}
+.spinner a.subtract{ left:0}
+.spinner a.add{ right:0}
+.spinner a.add.disabled,
+.spinner a.subtract.disabled{ color:#999; cursor:not-allowed}
+
 
 /*3.4.6 邮箱提示*/
 .emailSug-wrapper {position: absolute;background: #fff;text-align: left}
@@ -1854,7 +1891,7 @@ label,.placeholder{font-size:14px}
 }
 /*3.4.8 表单验证*/
 /*文本框的错误状态*/
-.Validform_error,input.error,select.error{background-color:#fbe2e2; border-color:#c66161; color:#c00}
+.Validform_error,input.error,select.error,textarea.error{background-color:#fbe2e2; border-color:#c66161; color:#c00}
 .Validform_wrong,.Validform_right,.Validform_warning{display:inline-block;height:20px;font-size:12px;vertical-align:middle; padding-left:25px}
 /*错误*/
 .Validform_wrong{background:url(../images/validform/iconpic-error.png) no-repeat 0 center;color:#ef392b}
@@ -3078,6 +3115,7 @@ H-ui采用Font Awesome 3.2.1的整套图标，因为是图标字体，所以可�
     .navbar-wrapper{ height: 45px!important}
     .logo{ margin-right: 0}
     .navbar .logo{height: 44px!important;line-height: 44px!important}
+    .navbar-nav{display: none; float: none!important}
     .navbar-nav > ul > li{ width: 100%; text-align: left; border-bottom: solid 1px #eee}
     .navbar-nav > ul > li > a{display:block;padding:0 15px; text-align: left}
     .navbar-nav > ul > li.dropDown.open > .dropDown-menu{ display: none}
@@ -3306,7 +3344,7 @@ H-ui采用Font Awesome 3.2.1的整套图标，因为是图标字体，所以可�
 .acrossTab li i{position:absolute; display:block; width:13px; height:13px; top:50%; margin-top:-6px; right:5px; font-size:0; line-height:0; cursor:pointer; background-image:url(../images/acrossTab/acrossTab-close.png); background-repeat:no-repeat; background-position:0 0}
 .acrossTab li i:hover{background-position:0 bottom}
 
-/*4.3 下拉菜单
+/*4.3.1 下拉菜单
 	Name:			mod_dropDown
 	Example:
 	<span class="dropDown">
@@ -3360,9 +3398,9 @@ H-ui采用Font Awesome 3.2.1的整套图标，因为是图标字体，所以可�
   <div class="slider">
     <div class="bd">
       <ul>
-        <li><a href="http://www.h-ui.net/" target="_blank"><img class="lazyload" data-original="temp/banner1.jpg" ></a></li>
-        <li><a href="http://www.h-ui.net/zhaishang.shtml" target="_blank"><img class="lazyload" data-original="temp/banner2.jpg" ></a></li>
-        <li><a href="http://h-ui.net/H-ui.admin.shtml" target="_blank"><img class="lazyload" data-original="temp/banner4.jpg" ></a></li>
+        <li><a href="http://www.h-ui.net/" target="_blank"><img src="temp/banner1.jpg" ></a></li>
+        <li><a href="http://www.h-ui.net/zhaishang.shtml" target="_blank"><img src="temp/banner2.jpg" ></a></li>
+        <li><a href="http://h-ui.net/H-ui.admin.shtml" target="_blank"><img src="temp/banner4.jpg" ></a></li>
       </ul>
     </div>
     <ol class="hd cl dots">
@@ -3501,7 +3539,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 	Explain:		警告,使用警告框jQuery插件
 */
 .progress,.progress-bar,.sr-only{height:10px; font-size:0;line-height:0}
-.progress{overflow:hidden; width:400px}
+.progress{overflow:hidden; width:100%}
 .progress.radius{}/*自定义圆角*/
 .progress-bar{width:100%;background-color:#efefef;}
 .sr-only{
@@ -3568,10 +3606,12 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 					box-shadow: 0 3px 9px rgba(0,0,0,.5)}
 		
 			.modal-header {min-height: 16.42857143px;padding: 15px;border-bottom: 1px solid #eee; position:relative}
-			.modal-header .close{position:absolute; right:10px; top:10px}
+			.modal-header .close{position:absolute; right:15px; top:15px}
+			.modal-close{position:absolute; right:15px; top:15px;font-size:24px; z-index: 9}
+			a.modal-close:hover{ text-decoration: none}
 			.modal-header h3,.modal-header .modal-title{margin:0; padding:10px 0; font-size:16px}
 			
-			.modal-body {position:relative;padding: 15px;overflow-y:visible;word-break:break-all}
+			.modal-body {position:relative;padding:15px;overflow-y:visible;word-break:break-all}
 				.modal-form {margin-bottom: 0}
 				
 			.modal-footer {padding:15px;margin-bottom: 0;text-align: right;background-color: #f5f5f5;border-top: 1px solid #eee;*zoom: 1}
@@ -3792,7 +3832,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 	</div>
 */
 .panel{ background-color:#fff; border:solid 1px transparent}
-	.panel-header{ border-bottom:solid 1px transparent; padding:8px 15px; font-size:14px; font-weight:700}/*面板标题*/
+	.panel-header{ border-bottom:solid 1px transparent; padding:8px 15px; font-size:14px; font-weight:700; margin-bottom:-1px}/*面板标题*/
 	.panel-body{ padding:15px}/*面板内容*/
 	.panel-footer{background-color: #f5f5f5;border-top: 1px solid #ddd;padding:5px 20px}/*面板页脚*/
 /*默认面板*/
@@ -3892,18 +3932,37 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 		  <input type="hidden" class="Hui-tags-val" name="" value="">
 		</div>
 	*/
-	.Hui-tags{border:solid 1px #dedede; padding:0 10px}
-		.Hui-tags-editor{position:relative; padding:10px 0 10px 24px}
-		.Hui-tags-editor .Hui-tags-icon{position:absolute; left:0; top:11px; font-size:14px; color:#666}
-			.Hui-tags-token{color:#aaa; float:left; font-size:12px; height:20px; line-height:20px; margin-right:8px; padding:0 1px; white-space:nowrap; cursor:pointer}
-			.Hui-tags-token:before{content:"#"}
-			.Hui-tags-token:hover{text-decoration:line-through}
+	.Hui-tags,
+	.Huitags-wraper{border:solid 1px #dedede; padding:0 10px}
+		.Hui-tags-editor,
+		.Huitags-editor{position:relative; padding:10px 0 10px 24px;min-height:20px}
+		
+		.Hui-tags-editor .Hui-tags-icon,
+		.Huitags-editor .Huitags-icon{position:absolute; left:0; top:11px; font-size:14px; color:#666}
+		
+			.Hui-tags-token,
+			.Huitags-token{color:#aaa; float:left; font-size:12px; height:20px; line-height:20px; margin-right:8px; padding:0 1px; white-space:nowrap; cursor:pointer}
+			.Hui-tags-token:before,
+			.Huitags-token:before{content:"#"}
+			.Hui-tags-token:hover,
+			.Huitags-token:hover{text-decoration:line-through}
+			
 			.Hui-tags-iptwrap{position:relative; float:left}
-				.Hui-tags-input{position:relative;height:20px;min-width:60px; border:0 none; vertical-align:top;line-height:20px; color:#333;z-index:2;background: url(../images/Hui-tags/empty.png) repeat scroll 0 0; display:inline-block; width:100%}
-				.Hui-tags-label{position:absolute; top:0; left:2px; width:240px; height:20px; line-height:20px; font-size:14px; overflow:hidden; z-index:1; color:#ccc}
-			.Hui-tags-list{padding:0 0 10px 0; display:none}
-		.Hui-notag{font-size:12px}
-		.Hui-tags-has span{cursor:pointer; font-size:12px; white-space:nowrap; margin-right:10px}
+			.Huitags-input-wraper{}
+				.Hui-tags-input
+				{position:relative;height:20px;min-width:60px; border:0 none; vertical-align:top;line-height:20px; color:#333;z-index:2;background: url(../images/Hui-tags/empty.png) repeat scroll 0 0; display:inline-block; width:100%}
+				.Huitags-input{}
+				.Hui-tags-label,
+				.Huitags-label{position:absolute; top:0; left:2px; width:240px; height:20px; line-height:20px; font-size:14px; overflow:hidden; z-index:1; color:#ccc}
+				
+			.Hui-tags-list,
+			.Huitags-list{padding:0 0 10px 0;}
+			
+		.Hui-notag,
+		.Huitags-notag{font-size:12px}
+		
+		.Hui-tags-has span,
+		.Huitags-has span{cursor:pointer; font-size:12px; white-space:nowrap; margin-right:10px}
 	
 	/*4.19.2 标签混排效果
 		Name:			mod_tags
