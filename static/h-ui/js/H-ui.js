@@ -1,8 +1,8 @@
 /*-----------H-ui前端框架-------------
-* H-ui.js v3.0.2
+* H-ui.js v3.1.2
 * http://www.h-ui.net/
 * Created & Modified by guojunhui
-* Date modified 2017-01.19
+* Date modified 2017.05.25
 *
 * Copyright 2013-2017 北京颖杰联创科技有限公司 All rights reserved.
 * Licensed under MIT license.
@@ -16,30 +16,32 @@ jQuery.form.js v3.51.0
 jQuery.lazyload.js v1.9.3
 jQuery.responsive-nav.js v1.0.39
 jQuery.placeholder.js
-jQuery.Spinner.js
 jQuery.emailsuggest.js v1.0
 jQuery.format.js
 jQuery.togglePassword.js
 jQuery.iCheck.js
+jQuery.raty.js v2.4.5
 jQuery.onePageNav.js
 jQuery.stickUp.js
+jQuery.ColorPicker.js
 
 jQuery.HuiaddFavorite.js
 jQuery.Huisethome.js
 jQuery.Huisidenav.js
-jQuery.Huihover.js
-jQuery.Huifocusblur.js
+jQuery.Huihover.js v2.0
+jQuery.Huifocusblur.js V2.0
 jQuery.Huiselect.js
-jQuery.Huitab.js
-jQuery.Huifold.js
-jQuery.Huitags.js
+jQuery.Huitab.js v2.0
+jQuery.Huifold.js v2.0
+jQuery.Huitags.js v2.0
 jQuery.Huitagsmixed.js
-jQuery.Huitextarealength.js
-jQuery.Huipreview.js
+jQuery.Huitextarealength.js v2.0
+jQuery.Huipreview.js v2.0
 jQuery.Huimodalalert.js
 jQuery.Huialert.js
-jQuery.Huitotop.js
+jQuery.Huitotop.js v2.0
 jQuery.Huimarquee.js
+jQuery.Huispinner.js v2.0
 
 Bootstrap.modal.js v3.3.0
 Bootstrap.dropdown.js v3.3.0
@@ -2370,7 +2372,6 @@ function stopDefault(e) {
 				if (opts.animate) {
 					var objStyle = nav.style,
 					transition = "max-height " + opts.transition + "ms";
-
 					objStyle.WebkitTransition = objStyle.MozTransition = objStyle.OTransition = objStyle.transition = transition;
 				}
 			},
@@ -2384,9 +2385,7 @@ function stopDefault(e) {
 				for (var i = 0; i < nav.inner.length; i++) {
 					savedHeight += nav.inner[i].offsetHeight;
 				}
-
 				var innerStyles = "." + opts.jsClass + " ." + opts.navClass + "-" + this.index + ".opened{max-height:" + savedHeight + "px !important} ." + opts.jsClass + " ." + opts.navClass + "-" + this.index + ".opened.dropdown-active {max-height:9999px !important}";
-
 				if (styleElement.styleSheet) {
 					styleElement.styleSheet.cssText = innerStyles;
 				} else {
@@ -2765,75 +2764,133 @@ function stopDefault(e) {
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Spinner.js 微调器
+ * jQuery.Huispinner.js v2.1 微调器
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.06.25
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
-!function($) {
-	$.fn.Spinner = function(opts) {
+!function($) {	
+	$.fn.Huispinner = function(options, callback) {
 		var defaults = {
-			value: 1,
-			min: 1,
-			len: 3,
-			max: 99
+			value : 1,
+			minValue : 1,
+			maxValue : 999,
+			dis : 1,
 		}
-		var options = $.extend(defaults, opts);
+		var options = $.extend(defaults, options);
 		var keyCodes = {
-			up: 38,
-			down: 40
+			up : 38,
+			down : 40
 		}
-		return this.each(function() {
-			var a = $('<a></a>');
-			f(a, 0, "decrease", "-"); //加
-			var c = $('<a></a>');
-			f(c, 0, "increase", "+"); //减
-			var b = $('<input/>');
-			f(b, 1, "amount input-text");
-			cv(0); //值
-			$(this).append(a).append(b).append(c);
-			a.click(function() {
-				cv( - 1)
-			});
-			b.keyup(function() {
-				cv(0)
-			});
-			c.click(function() {
-				cv( + 1)
-			});
-			b.on('keyup paste change',
-			function(e) {
-				e.keyCode == keyCodes.up && cv( + 1);
-				e.keyCode == keyCodes.down && cv( - 1);
-			});
-			function cv(n) {
-				b.val(b.val().replace(/[^\d]/g, ''));
-				bv = parseInt(b.val() || options.min) + n;
-				bv >= options.min && bv <= options.max && b.val(bv);
-				if (bv <= options.min) {
-					b.val(options.min);
-					f(a, 2, "disDe", "decrease");
-				} else {
-					f(a, 2, "decrease", "disDe");
-				}
-				if (bv >= options.max) {
-					b.val(options.max);
-					f(c, 2, "disIn", "Increase");
-				} else {
-					f(c, 2, "increase", "disIn");
-				}
+
+		this.each(function() {
+			var that = $(this);
+			var str = '<div class="spinner">'
+					+ '<a class="subtract disabled" href="javascript:void(0)"><i>-</i></a>'
+					+ '<input class="amount input-text" value="'
+					+ options.value + '" autocomplete="off">'
+					+ '<a class="add" href="javascript:void(0)"><i>+</i></a>'
+					+ '</div>';
+			that.append(str);
+
+			var input = that.find(".input-text"),
+				subtract = that.find(".subtract"),
+				add = that.find(".add"),
+				value = parseInt(input.val());
+
+			if (value <= options.minValue) {
+				subtract.addClass("disabled");
+				add.removeClass("disabled");
+			}
+			if (value >= options.maxValue) {
+				subtract.removeClass("disabled");
+				add.addClass("disabled");
 			}
 
-		});
+			// 输入框失去焦点
+			input.on('blur', function() {
+				var v = $(this).val();
+				v = v.replace(/[^\d]/g, "");
+				v = v.replace(/\b(0+)/gi, "");
 
-		function f(o, t, c, s) {
-			t == 0 && o.addClass(c).attr("href", "javascript:void(0)").append("<i></i>").find("i").append(s);
-			t == 1 && o.addClass(c).attr({
-				"value": options.value,
-				"autocomplete": "off",
-				"maxlength": options.len
+				if (v != "") {
+					if (v > options.minValue && v < options.maxValue) {
+						input.val(v)
+						add.removeClass("disabled");
+						subtract.removeClass("disabled");
+					} else {
+						if (v <= options.minValue) {
+							input.val(options.minValue);
+							subtract.addClass("disabled");
+							add.removeClass("disabled");
+						} else {
+							input.val(options.maxValue);
+							subtract.removeClass("disabled");
+							add.addClass("disabled");
+						}
+					}
+				} else {
+					$(this).val(options.minValue);
+					subtract.addClass("disabled");
+					add.removeClass("disabled");
+				}
+				if (callback) {
+					callback(input.val());
+				}
 			});
-			t == 2 && o.addClass(c).removeClass(s);
-		}
+
+			// 上下方向键
+			input.on("keydown", function(e) {
+				var evt = e || window.event;
+				if (evt.keyCode === keyCodes.up) {
+					subtract.trigger("click");
+					evt.returnValue = false;
+				}
+				if (evt.keyCode === keyCodes.down) {
+					add.trigger("click");
+					evt.returnValue = false;
+				}
+			});
+
+			// 减
+			subtract.on('click', function() {
+				var goodsCount = parseInt(input.val());
+				input.val(goodsCount <= options.minValue
+						? options.minValue
+						: goodsCount - options.dis);
+				add.removeClass("disabled");
+				if (input.val() <= options.minValue) {
+					input.val(options.minValue)
+					subtract.addClass("disabled");
+				}
+				if (callback) {
+					callback(input.val());
+				}
+			});
+
+			// 加
+			add.on('click', function() {
+				var goodsCount = parseInt(input.val());
+				input.val(goodsCount >= options.maxValue
+						? options.maxValue
+						: goodsCount + options.dis);
+				subtract.removeClass("disabled");
+
+				if (input.val() >= options.maxValue) {
+					input.val(options.maxValue);
+					add.addClass("disabled");
+				}
+				if (callback) {
+					callback(input.val());
+				}
+			});
+		});
 	}
-} (window.jQuery);
+}(window.jQuery);
 
 /* =======================================================================
  * jQuery.format.js 金额格式化
@@ -3393,7 +3450,7 @@ function stopDefault(e) {
 })(window.jQuery || window.Zepto);
 
 /* =======================================================================
- * jQuery.raty.js v3.0.5- A Star Rating Plugin
+ * jQuery.raty.js v2.4.5- A Star Rating Plugin
  * -------------------------------------------------------------------
  * jQuery Raty is a plugin that generates a customizable star rating.
  * Licensed under The MIT License
@@ -3974,6 +4031,240 @@ function stopDefault(e) {
 	};
 })(jQuery);
 
+ /* =======================================================================
+ * jQuery.ColorPicker.js 颜色控件
+ * ========================================================================*/
+(function($) {
+	'use strict';
+	var name = 'Hui.colorPicker'; // modal name
+	var TEAMPLATE = '<div class="colorpicker"><button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="cp-title"></span><i class="ic"></i></button><ul class="dropdown-menu clearfix"></ul></div>';
+	var LANG = {
+		zh_cn: {
+			errorTip: "不是有效的颜色值"
+		},
+		zh_tw: {
+			errorTip: "不是有效的顏色值"
+		},
+		en: {
+			errorTip: "Not a valid color value"
+		}
+	};
+
+	// The ColorPicker modal class
+	var ColorPicker = function(element, options) {
+		this.name = name;
+		this.$ = $(element);
+
+		this.getOptions(options);
+		this.init();
+	};
+
+	// default options
+	ColorPicker.DEFAULTS = {
+		colors: ['#00BCD4', '#388E3C', '#3280fc', '#3F51B5', '#9C27B0', '#795548', '#F57C00', '#F44336', '#E91E63'],
+		pullMenuRight: true,
+		wrapper: 'btn-wrapper',
+		tileSize: 30,
+		lineCount: 5,
+		optional: true,
+		tooltip: 'top',
+		icon: 'caret-down',
+		// btnTip: 'Tool tip in button'
+	};
+
+	ColorPicker.prototype.init = function() {
+		var options = this.options,
+		that = this;
+
+		this.$picker = $(TEAMPLATE).addClass(options.wrapper);
+		this.$picker.find('.cp-title').toggle(options.title !== undefined).text(options.title);
+		this.$menu = this.$picker.find('.dropdown-menu').toggleClass('pull-right', options.pullMenuRight);
+		this.$btn = this.$picker.find('.btn.dropdown-toggle');
+		this.$btn.find('.ic').addClass('icon-' + options.icon);
+		if (options.btnTip) {
+			this.$picker.attr('data-toggle', 'tooltip').tooltip({
+				title: options.btnTip,
+				placement: options.tooltip,
+				container: 'body'
+			});
+		}
+		this.$.attr('data-provide', null).after(this.$picker);
+
+		// init colors
+		this.colors = {};
+		$.each(this.options.colors,
+		function(idx, rawColor) {
+			if ($.zui.Color.isColor(rawColor)) {
+				var color = new $.zui.Color(rawColor);
+				that.colors[color.toCssStr()] = color;
+			}
+		});
+
+		this.updateColors();
+		var that = this;
+		this.$picker.on('click', '.cp-tile',
+		function() {
+			that.setValue($(this).data('color'));
+		});
+		var $input = this.$;
+		var setInputColor = function() {
+			var val = $input.val();
+			var isColor = $.zui.Color.isColor(val);
+			$input.parent().toggleClass('has-error', !isColor && !(options.optional && val === ''));
+			if (isColor) {
+				that.setValue(val, true);
+			} else {
+				if (options.optional && val === '') {
+					$input.tooltip('hide');
+				} else if (!$input.is(':focus')) {
+					$input.tooltip('show', options.errorTip);
+				}
+			}
+		}
+		if ($input.is('input:not([type=hidden])')) {
+			if (options.tooltip) {
+				$input.attr('data-toggle', 'tooltip').tooltip({
+					trigger: 'manual',
+					placement: options.tooltip,
+					tipClass: 'tooltip-danger',
+					container: 'body'
+				});
+			}
+			$input.on('keyup paste input change', setInputColor);
+		} else {
+			$input.appendTo(this.$picker);
+		}
+		setInputColor();
+	};
+
+	ColorPicker.prototype.addColor = function(color) {
+		var hex = color.toCssStr(),
+		options = this.options;
+
+		if (!this.colors[hex]) {
+			this.colors[hex] = color;
+		}
+
+		var $a = $('<a href="###" class="cp-tile"></a>', {
+			titile: color
+		}).data('color', color).css({
+			'color': color.contrast().toCssStr(),
+			'background': hex,
+			'border-color': color.luma() > 0.43 ? '#ccc': 'transparent'
+		}).attr('data-color', hex);
+		this.$menu.append($('<li/>').css({
+			width: options.tileSize,
+			height: options.tileSize
+		}).append($a));
+		if (options.optional) {
+			this.$menu.find('.cp-tile.empty').parent().detach().appendTo(this.$menu);
+		}
+	};
+
+	ColorPicker.prototype.updateColors = function(colors) {
+		var $picker = this.$picker,
+		$menu = this.$menu.empty(),
+		options = this.options,
+		colors = colors || this.colors,
+		that = this;
+		var bestLineCount = 0;
+		$.each(colors,
+		function(idx, color) {
+			that.addColor(color);
+			bestLineCount++;
+		});
+		if (options.optional) {
+			var $li = $('<li><a class="cp-tile empty" href="###"></a></li>').css({
+				width: options.tileSize,
+				height: options.tileSize
+			});
+			this.$menu.append($li);
+			bestLineCount++;
+		}
+		$menu.css('width', Math.min(bestLineCount, options.lineCount) * options.tileSize + 6);
+	};
+
+	ColorPicker.prototype.setValue = function(color, notSetInput) {
+		var options = this.options;
+		this.$menu.find('.cp-tile.active').removeClass('active');
+		var hex = '';
+		if (color) {
+			var c = new $.zui.Color(color);
+			hex = c.toCssStr().toLowerCase();
+			this.$btn.css({
+				background: hex,
+				color: c.contrast().toCssStr(),
+				borderColor: c.luma() > 0.43 ? '#ccc': hex
+			});
+			if (!this.colors[hex]) {
+				this.addColor(c);
+			}
+			if (!notSetInput && this.$.val().toLowerCase() !== hex) {
+				this.$.val(hex).trigger('change');
+			}
+			this.$menu.find('.cp-tile[data-color=' + hex + ']').addClass('active');
+			this.$.tooltip('hide');
+			this.$.trigger('colorchange', c);
+		} else {
+			this.$btn.attr('style', null);
+			if (!notSetInput && this.$.val() !== '') {
+				this.$.val(hex).trigger('change');
+			}
+			if (options.optional) {
+				this.$.tooltip('hide');
+			}
+			this.$menu.find('.cp-tile.empty').addClass('active');
+			this.$.trigger('colorchange', null);
+		}
+
+		if (options.updateBorder) {
+			$(options.updateBorder).css('border-color', hex);
+		}
+		if (options.updateBackground) {
+			$(options.updateBackground).css('background-color', hex);
+		}
+		if (options.updateColor) {
+			$(options.updateText).css('color', hex);
+		}
+		if (options.updateText) {
+			$(options.updateText).text(hex);
+		}
+	};
+
+	// Get and init options
+	ColorPicker.prototype.getOptions = function(options) {
+		var thisOptions = $.extend({},
+		ColorPicker.DEFAULTS, this.$.data(), options);
+		if (typeof thisOptions.colors === 'string') thisOptions.colors = thisOptions.colors.split(',');
+		var lang = (thisOptions.lang || $.zui.clientLang()).toLowerCase();
+		if (!thisOptions.errorTip) {
+			thisOptions.errorTip = LANG[lang].errorTip;
+		}
+		if (!$.fn.tooltip) thisOptions.btnTip = false;
+		this.options = thisOptions;
+	};
+
+	// Extense jquery element
+	$.fn.colorPicker = function(option) {
+		return this.each(function() {
+			var $this = $(this);
+			var data = $this.data(name);
+			var options = typeof option == 'object' && option;
+
+			if (!data) $this.data(name, (data = new ColorPicker(this, options)));
+
+			if (typeof option == 'string') data[option]();
+		});
+	};
+
+	$.fn.colorPicker.Constructor = ColorPicker;
+
+	// Auto call colorPicker after document load complete
+	$(function() {
+		$('[data-provide="colorpicker"]').colorPicker();
+	});
+}(jQuery));
+
 /* =======================================================================
  * jquery.HuiaddFavorite.js 添加收藏
  * <a title="收藏本站" href="javascript:;" onClick="addFavoritepage('H-ui前端框架','http://www.h-ui.net/');">收藏本站</a>
@@ -4033,36 +4324,60 @@ function displaynavbar(obj){
 }
 
 /* =======================================================================
- * jQuery.Huihover.js 得到失去焦点
+ * jQuery.Huihover.js v2.0 Huihover
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.05
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
 !function($) {
-	$.Huihover = function(obj) {
-		$(obj).hover(function() {
-			$(this).addClass("hover");
-		},
-		function() {
-			$(this).removeClass("hover");
+	$.fn.Huihover = function(options){
+		var defaults = {
+			className:"hover",
+		}
+		var options = $.extend(defaults, options);
+		this.each(function(){			
+			var that = $(this);
+			that.hover(function() {
+				that.addClass(options.className);
+			},
+			function() {
+				that.removeClass(options.className);
+			});
 		});
 	}
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Huifocusblur.js 得到失去焦点
+ * jQuery.Huifocusblur.js v2.0 得到失去焦点
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.09
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
 !function($) {
-	$.Huifocusblur = function(obj) {
-		$(obj).focus(function() {
-			$(this).addClass("focus").removeClass("inputError");
-		});
-		$(obj).blur(function() {
-			$(this).removeClass("focus");
+	$.fn.Huifocusblur = function(options){
+		var defaults = {
+			className:"focus",
+		}
+		var options = $.extend(defaults, options);
+		this.each(function(){			
+			var that = $(this);
+			that.focus(function() {
+				that.addClass(options.className).removeClass("inputError");
+			});			
+			that.blur(function() {
+				that.removeClass(options.className);
+			});
 		});
 	}
 } (window.jQuery);
-$(function() {
-	/*****表单*****/
-	$.Huifocusblur(".input-text,.textarea");
-});
 
 /* =======================================================================
  * jQuery.Huiselect.js 选择
@@ -4088,163 +4403,253 @@ $(function() {
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Huitab.js 选项卡
+ * jQuery.Huitab.js v2.0 选项卡
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.05
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
 !function($) {
-	$.Huitab = function(tabBar, tabCon, class_name, tabEvent, i) {
-		var $tab_menu = $(tabBar);
-		// 初始化操作
-		$tab_menu.removeClass(class_name);
-		$(tabBar).eq(i).addClass(class_name);
-		$(tabCon).hide();
-		$(tabCon).eq(i).show();
-
-		$tab_menu.on(tabEvent,
-		function() {
-			$tab_menu.removeClass(class_name);
-			$(this).addClass(class_name);
-			var index = $tab_menu.index(this);
-			$(tabCon).hide();
-			$(tabCon).eq(index).show();
+	$.fn.Huitab = function(options){
+		var defaults = {
+			tabBar:'.tabBar span',
+			tabCon:".tabCon",
+			className:"current",
+			tabEvent:"click",
+			index:0,
+		}
+		var options = $.extend(defaults, options);
+		this.each(function(){
+			var that = $(this);
+			that.find(options.tabBar).removeClass(options.className);
+			that.find(options.tabBar).eq(options.index).addClass(options.className);
+			that.find(options.tabCon).hide();
+			that.find(options.tabCon).eq(options.index).show();
+			
+			that.find(options.tabBar).on(options.tabEvent,function(){
+				that.find(options.tabBar).removeClass(options.className);
+				$(this).addClass(options.className);
+				var index = that.find(options.tabBar).index(this);
+				that.find(options.tabCon).hide();
+				that.find(options.tabCon).eq(index).show();
+			});
 		});
 	}
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Huifold.js 折叠
+ * jQuery.Huifold.js v2.0 折叠
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.05
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
 !function($) {
-	$.Huifold = function(obj, obj_c, speed, obj_type, Event) {
-		if (obj_type == 2) {
-			$(obj + ":first").find("b").html("-");
-			$(obj_c + ":first").show();
+	$.fn.Huifold = function(options){
+		var defaults = {
+			titCell:'.item .Huifold-header',
+			mainCell:'.item .Huifold-body',
+			type:1,//1	只打开一个，可以全部关闭;2	必须有一个打开;3	可打开多个
+			trigger:'click',
+			className:"selected",
+			speed:'first',
 		}
-		$(obj).on(Event,
-		function() {
-			if ($(this).next().is(":visible")) {
-				if (obj_type == 2) {
-					return false;
-				} else {
-					$(this).next().slideUp(speed).end().removeClass("selected");
-					if ($(this).find("b")) {
-						$(this).find("b").html("+");
+		var options = $.extend(defaults, options);
+		this.each(function(){	
+			var that = $(this);
+			that.find(options.titCell).on(options.trigger,function(){
+				if ($(this).next().is(":visible")) {
+					if (options.type == 2) {
+						return false;
+					} else {
+						$(this).next().slideUp(options.speed).end().removeClass(options.className);
+						if ($(this).find("b")) {
+							$(this).find("b").html("+");
+						}
+					}
+				}else {
+					if (options.type == 3) {
+						$(this).next().slideDown(options.speed).end().addClass(options.className);
+						if ($(this).find("b")) {
+							$(this).find("b").html("-");
+						}
+					} else {
+						that.find(options.mainCell).slideUp(options.speed);
+						that.find(options.titCell).removeClass(options.className);
+						if (that.find(options.titCell).find("b")) {
+							that.find(options.titCell).find("b").html("+");
+						}
+						$(this).next().slideDown(options.speed).end().addClass(options.className);
+						if ($(this).find("b")) {
+							$(this).find("b").html("-");
+						}
 					}
 				}
-			} else {
-				if (obj_type == 3) {
-					$(this).next().slideDown(speed).end().addClass("selected");
-					if ($(this).find("b")) {
-						$(this).find("b").html("-");
-					}
-				} else {
-					$(obj_c).slideUp(speed);
-					$(obj).removeClass("selected");
-					if ($(this).find("b")) {
-						$(obj).find("b").html("+");
-					}
-					$(this).next().slideDown(speed).end().addClass("selected");
-					if ($(this).find("b")) {
-						$(this).find("b").html("-");
-					}
-				}
-			}
+			});
+			
 		});
 	}
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Huitags.js 标签
+ * jQuery.Huitags.js v2.0 标签
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.10
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
 !function($) {
-	/*tag标签*/
-	var time1;
-	$(".Hui-tags-lable").show();
-	$(".Hui-tags-input").val("");
-	$(document).on("blur", ".Hui-tags-input",
-	function() {
-		time1 = setTimeout(function() {
-			$(this).parents(".Hui-tags").find(".Hui-tags-list").slideUp();
-		},
-		400);
-	});
-	$(document).on("focus", ".Hui-tags-input",
-	function() {
-		clearTimeout(time1);
-	});
-	$(document).on("click", ".Hui-tags-input",
-	function() {
-		$(this).find(".Hui-tags-input").focus();
-		$(this).find(".Hui-tags-list").slideDown();
-	});
-	function gettagval(obj) {
-		var str = "";
-		var token = $(obj).parents(".Hui-tags").find(".Hui-tags-token");
-		if (token.length < 1) {
-			$(obj).parents(".Hui-tags").find(".Hui-tags-val").val("");
-			return false;
+	$.fn.Huitags = function(options) {
+		var defaults = {
+			value:'Hui前端框架,H-ui,辉哥',
+			maxlength : 20,
+			number : 5,
+			tagsDefault : ["Html","CSS","JS"],
 		}
-		for (var i = 0; i < token.length; i++) {
-			str += token.eq(i).text() + ",";
-			$(obj).parents(".Hui-tags").find(".Hui-tags-val").val(str);
+		var options = $.extend(defaults, options);
+		var keyCodes = {
+			Enter : 13,
+			Enter2 : 108,
+			Spacebar:32
 		}
-	}
-	$(document).on("keydown", ".Hui-tags-input",
-	function(event) {
-		$(this).next().hide();
-		var v = $(this).val().replace(/\s+/g, "");
-		var reg = /^,|,$/gi;
-		v = v.replace(reg, "");
-		v = $.trim(v);
-		var token = $(this).parents(".Hui-tags").find(".Hui-tags-token");
-		if (v != '') {
-			if (event.keyCode == 13 || event.keyCode == 108 || event.keyCode == 32) {
-				$('<span class="Hui-tags-token">' + v + '</span>').insertBefore($(this).parents(".Hui-tags").find(".Hui-tags-iptwrap"));
-				$(this).val("");
-				gettagval(this);
-			}
-		} else {
-			if (event.keyCode == 8) {
-				if (token.length >= 1) {
-					$(this).parents(".Hui-tags").find(".Hui-tags-token:last").remove();
+		this.each(function(){
+			var that = $(this);
+			var str = 
+			'<div class="Huitags-wraper">'+
+				'<div class="Huitags-editor cl"></div>'+
+				'<div class="Huitags-input-wraper">'+
+					'<input type="text" class="input-text Huitags-input" maxlength="'+options.maxlength+'" value="">'+
+				'</div>'+
+				'<div class="Huitags-list">'+
+					'<div class="Huitags-notag" style="display:none">暂无常用标签</div>'+
+					'<div class="Huitags-has"></div>'+
+				'</div>'+
+				'<input type="hidden" class="Huitags-val" name="" value="'+options.value+'">'+
+			'</div>';
+			that.append(str);
+			var wraper = that.find(".Huitags-wraper");
+			var editor = that.find(".Huitags-editor");
+			var input =that.find(".Huitags-input");
+			var list = that.find(".Huitags-list");
+			var has = that.find(".Huitags-has");
+			var val = that.find(".Huitags-val");
+			
+
+			
+			if(options.tagsDefault){
+				var tagsDefaultLength = (options.tagsDefault).length;
+				for(var i = 0;i< tagsDefaultLength; i++){
+					has.append('<span>'+options.tagsDefault[i]+'</span>');
+				}
+				has.find("span").on('click',function(){
+					var taghasV = $(this).text();
+					taghasV=taghasV.replace(/(^\s*)|(\s*$)/g,"");
+					editor.append('<span class="Huitags-token">'+taghasV+'</span>');
 					gettagval(this);
-				} else {
-					$(this).parents(".Hui-tags").find(".Hui-tags-lable").show();
+					$(this).remove();
+				});
+			}
+			
+			function gettagval(obj) {
+				var str = "";
+				var token = that.find(".Huitags-token");
+				if (token.length < 1) {
+					input.val("");
 					return false;
 				}
-
+				for (var i = 0; i < token.length; i++) {
+					str += token.eq(i).text() + ",";
+				}
+				str = unique(str, 1);
+				str=str.join();
+				val.val(str);
 			}
-		}
-	});
-
-	$(document).on("click", ".Hui-tags-has span",
-	function() {
-		var taghasV = $(this).text();
-		taghasV = taghasV.replace(/(^\s*)|(\s*$)/g, "");
-		$('<span class="Hui-tags-token">' + taghasV + '</span>').insertBefore($(this).parents(".Hui-tags").find(".Hui-tags-iptwrap"));
-		gettagval(this);
-		$(this).parents(".Hui-tags").find(".Hui-tags-input").focus();
-	});
-	$(document).on("click", ".Hui-tags-token",
-	function() {
-		var token = $(this).parents(".Hui-tags").find(".Hui-tags-token");
-		var it = $(this).parents(".Hui-tags");
-		$(this).remove();
-		switch (token.length) {
-		case 1:
-			it.find(".Hui-tags-lable").show();
-			break;
-		}
-		var str = "";
-		var token = it.find(".Hui-tags-token");
-		if (token.length < 1) {
-			it.find(".Hui-tags-val").val("");
-			return false;
-		}
-		for (var i = 0; i < token.length; i++) {
-			str += token.eq(i).text() + ",";
-			it.find(".Hui-tags-val").val(str);
-		}
-	});
+			/*将字符串逗号分割成数组并去重*/
+			function unique(o, type){
+				//去掉前后空格
+				o=o.replace(/(^\s*)|(\s*$)/g,"");
+				if(type == 1) {
+					//把所有的空格和中文逗号替换成英文逗号
+					o=o.replace(/(\s)|(，)/g, ",");
+				} else {
+					//把所有的中文逗号替换成英文逗号
+					o=o.replace(/(，)/g, ",");
+				}
+				//去掉前后英文逗号
+				o=o.replace(/^,|,$/g, "");
+				//去重连续的英文逗号
+				o=o.replace(/,+/g,',');
+				o=o.split(",");
+				var n = [o[0]]; //结果数组
+				for(var i = 1; i < o.length; i++){
+					if (o.indexOf(o[i]) == i) {
+						if(o[i] == "")
+							continue;
+						n.push(o[i]);
+					}
+				}
+				return n;
+			}
+			
+			input.on("keydown",function(e){
+				var evt = e || window.event;
+				if (evt.keyCode == keyCodes.Enter || evt.keyCode == keyCodes.Enter2 || evt.keyCode == keyCodes.Spacebar) {
+					var v = input.val().replace(/\s+/g, "");
+					var reg = /^,|,$/gi;
+					v = v.replace(reg, "");
+					v = $.trim(v);
+					if (v != '') {
+						input.change();
+					}else{
+						return false;
+					}
+				}
+			});
+			
+			input.on("change",function(){
+				var v1 = input.val();
+				var v2 = val.val();
+				var v = v2+','+v1;
+				if(v!=''){
+					var str='<i class="Huitags-icon Hui-iconfont">&#xe64b;</i>';
+					var result = unique(v, 1);
+					if(result.length>0){
+						for(var j=0;j<result.length;j++){
+							str+='<span class="Huitags-token">'+result[j]+'</span>';
+						}
+						val.val(result);
+						editor.html(str);
+						input.val("").blur();
+					}
+				}
+			});
+					
+			$(document).on("click",".Huitags-token",function(){
+				$(this).remove();
+				var str ="";
+				if(that.find(".Huitags-token").length<1){
+					val.val("");
+					return false;
+				}else{
+					for(var i = 0;i< that.find(".Huitags-token").length;i++){
+						str += that.find(".Huitags-token").eq(i).text() + ",";
+					}
+					str = str.substring(0,str.length-1);
+					val.val(str);
+				}
+			});						
+			input.change();
+		});
+	}
 } (window.jQuery);
 
 /* =======================================================================
@@ -4262,75 +4667,125 @@ $(function() {
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Huitextarealength.js 字数限制
+ * jQuery.Huitextarealength.js v2.0 字数限制
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.12
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
 !function($) {
-	$.Huitextarealength = function(obj, maxlength) {
-		var v = $(obj).val();
-		var l = v.length;
-		if (l > maxlength) {
-			v = v.substring(0, maxlength);
-			$(obj).val(v);
+	$.fn.Huitextarealength = function(options){
+		var defaults = {
+			minlength:0,
+			maxlength:140,
+			errorClass:"error",
+			exceed:true,			
 		}
-		$(obj).parent().find(".textarea-length").text(v.length);
+		var options = $.extend(defaults, options);
+		this.each(function(){			
+			var that = $(this);
+			var v = that.val();
+			var l = v.length;
+			var str = '<p class="textarea-numberbar"><em class="textarea-length">'+l+'</em>/'+options.maxlength+'</p>';
+			that.parent().append(str);
+			
+			that.on("keyup",function(){
+				v = that.val();
+				l = v.length;				
+				if (l > options.maxlength) {
+					if(options.exceed){
+						that.addClass(options.errorClass);
+					}else{
+						v = v.substring(0, options.maxlength);
+						that.val(v);
+						that.removeClass(options.errorClass);
+					}					
+				}
+				else if(l<options.minlength){
+					that.addClass(options.errorClass);
+				}else{
+					that.removeClass(options.errorClass);
+				}
+				that.parent().find(".textarea-length").text(v.length);
+			});		
+			
+		});
 	}
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Huipreview.js 图片预览
+ * jQuery.Huipreview.js v2.0 图片预览
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.05
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
 !function($) {
-	$.Huipreview = function(obj) {
-		/*图片预览*/
-		$(obj).hover(function() {
-			$(this).addClass("active");
-			$("#tooltip-preview").remove();
-			var winW = $(window).width();
-			var winW5 = winW / 2;
-			this.myTitle = this.title;
-			this.title = "";
-			var midimg = $(this).attr('data-preview');
-			if (midimg == '') {
-				return false;
-			} else {
-				var imgT = $(this).parents(".imgItem").offset().top;
-				var imgL = $(this).parents(".imgItem").offset().left;
-				var imgW = $(this).parents(".imgItem").width();
-				var imgH = $(this).parents(".imgItem").height();
-				var ww = (imgL + imgW / 2);
-				if (ww < winW5) {
-					var tooltipLeft = (imgW + imgL) + "px";
-				} else {
-					var tooltipRight = (winW - imgL) + "px";
+	$.fn.Huipreview = function(options){
+		var defaults = {
+			className:"active",
+			bigImgWidth: 300,
+		}
+		var options = $.extend(defaults, options);
+		this.each(function(){
+			var that = $(this);
+			var timer;
+			that.hover(
+				function() {
+					clearTimeout(timer);
+					timer = setTimeout(function () {
+						$("#tooltip-preview").remove();
+						var smallImg = that.find("img").attr("src");
+						var bigImg = that.attr('data-src');
+						var bigImgW = that.attr('data-width');
+						var bigImgH = that.attr('data-height');
+						var winW = $(window).width();
+						var winW5 = winW / 2;
+						var imgT = that.parent().offset().top;
+						var imgL = that.parent().offset().left;
+						var imgW = that.parent().width();
+						var imgH = that.parent().height();
+						var ww = (imgL + imgW / 2);
+						var tooltipLeft = "auto",tooltipRight = "auto";
+						if (ww < winW5) {
+							tooltipLeft = (imgW + imgL) + "px";
+						} else {
+							tooltipRight = (winW - imgL) + "px";
+						}
+						
+						that.addClass(options.className);				
+						if (bigImg == '') {
+							return false;
+						} else {						
+							var tooltip_keleyi_com = 
+							'<div id="preview-wraper" style="position: absolute;width:'+options.bigImgWidth+'px;height:auto;top:' + imgT + 'px;right:' + tooltipRight + ';left:' + tooltipLeft + '">'+
+								'<img src="'+smallImg+'" width="'+options.bigImgWidth+'">'+
+							'</div>';
+							$("body").append(tooltip_keleyi_com);
+							/*图片预加载*/
+							var image = new Image();
+							image.src = bigImg;
+							/*创建一个Image对象*/
+							image.onload = function() {
+								$('#preview-wraper').find("img").attr("src",bigImg).css("width",options.bigImgWidth);
+							};
+						}
+					},500);
+				},
+				function() {
+					clearTimeout(timer);
+					that.removeClass(options.className);
+					$("#preview-wraper").remove();
 				}
-				var tooltip_keleyi_com = "<div id='tooltip-preview' style='top:" + imgT + "px;right:" + tooltipRight + ";left:" + tooltipLeft + "'><span id='tooltip-keleyi-div' class='loading' style='width:50px; height:50px'></span></div>";
-				$("body").append(tooltip_keleyi_com);
-				var midimgW = $(this).attr('data-width');
-				var midimgH = $(this).attr('data-height');
-				var imgTitle = this.myTitle ? "<br />" + this.myTitle + " 产品预览图": "";
-				/*图片预加载*/
-				var image = new Image();
-				/*创建一个Image对象*/
-				image.onload = function() {
-					if ($('a.preview.active').attr('data-preview') == midimg) {
-						var midingW2 = this.width;
-						var midingH2 = this.height;
-						$("#tooltip-keleyi-div").css({
-							"width": midingW2 + "px",
-							"height": midingH2 + "px"
-						});
-						$('#tooltip-keleyi-div').append(this);
-					}
-				};
-				image.src = midimg;
-			}
-		},
-		function() {
-			$(this).removeClass("active");
-			this.title = this.myTitle;
-			$("#tooltip-preview").remove();
+			);
 		});
-	}
+	}	
 } (window.jQuery);
 
 /* =======================================================================
@@ -4363,9 +4818,8 @@ $(function() {
  * ========================================================================*/
 !function($) {
 	$.Huialert = function() {
-		$.Huihover('.Huialert i');
-		$(".Huialert i").on("click",
-		function() {
+		$(".Huialert i").Huihover();
+		$(".Huialert i").on("click",function() {
 			var Huialert = $(this).parents(".Huialert");
 			Huialert.fadeOut("normal",
 			function() {
@@ -4377,22 +4831,45 @@ $(function() {
 } (window.jQuery);
 
 /* =======================================================================
- * jQuery.Huitotop.js 返回顶部
+ * jQuery.Huitotop.js v2.0 返回顶部
+ * http://www.h-ui.net/
+ * Created & Modified by guojunhui
+ * Date modified 2017.05.05
+ *
+ * Copyright 2017 北京颖杰联创科技有限公司 All rights reserved.
+ * Licensed under MIT license.
+ * http://opensource.org/licenses/MIT
  * ========================================================================*/
-var $backToTopEle = $('<a href="javascript:void(0)" class="tools-right toTop Hui-iconfont" title="返回顶部" alt="返回顶部" style="display:none">&#xe684;</a>').appendTo($("body")).click(function() {
-	$("html, body").animate({
-		scrollTop: 0
-	},
-	120);
-});
-var backToTopFun = function() {
-	var st = $(document).scrollTop(),
-	winh = $(window).height(); (st > 0) ? $backToTopEle.show() : $backToTopEle.hide();
-	/*IE6下的定位*/
-	if (!window.XMLHttpRequest) {
-		$backToTopEle.css("top", st + winh - 166);
+!function($) {
+	//bottom 距离底部高度
+	$.Huitotop = function(bottom){		
+		if(!bottom){
+			bottom = 60;
+		}
+		var str ='<a href="javascript:void(0)" class="tools-right toTop Hui-iconfont" title="返回顶部" alt="返回顶部" style="display:none;bottom:'+bottom+'px">&#xe684;</a>';
+		$(str).appendTo($('body')).click(function() {
+			$("html, body").animate({
+				scrollTop: 0
+			},
+			120);
+		});
+		var backToTopFun = function(){
+			var st = $(document).scrollTop();
+			var winh = $(window).height();
+			if(st> 0){
+				$(".toTop").show();
+			}else{
+				$(".toTop").hide();
+			}
+			/*IE6下的定位*/
+			if (!window.XMLHttpRequest) {
+				$(".toTop").css("top", st + winh - 166);
+			}
+			
+		}		
+		$(window).on("scroll",backToTopFun);	
 	}
-};
+} (window.jQuery);
 
 /* =======================================================================
  * jQuery.Huimarquee.js 滚动
@@ -4622,7 +5099,6 @@ jQuery(function($) {
 					function bottomView(i) {
 						contentView = $('#'+content[i]+'').height()*.4;
 						testView = contentTop[i] - contentView;
-						//console.log(varscroll);
 						if(varscroll > testView){
 							$('.'+itemClass).removeClass(itemHover);
 							$('.'+itemClass+':eq('+i+')').addClass(itemHover);
