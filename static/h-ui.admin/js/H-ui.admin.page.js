@@ -1,8 +1,8 @@
 /* -----------H-ui前端框架-------------
-* H-ui.admin.page.js v3.0
+* H-ui.admin.page.js v3.1
 * http://www.h-ui.net/
 * Created & Modified by guojunhui
-* Date modified 2017.02.08
+* Date modified 2017.07.04
 * Copyright 2013-2017 北京颖杰联创科技有限公司 All rights reserved.
 * Licensed under MIT license.
 * http://opensource.org/licenses/MIT
@@ -119,7 +119,10 @@ $(function(){
 	});
 	
 	/*左侧菜单*/
-	$.Huifold(".menu_dropdown dl dt",".menu_dropdown dl dd","fast",1,"click");	
+	$(".Hui-aside").Huifold({
+		titCell:'.menu_dropdown dl dt',
+		mainCell:'.menu_dropdown dl dd',
+	});	
 		
 	/*换肤*/
 	$("#Hui-skin .dropDown-menu a").click(function(){
