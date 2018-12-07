@@ -107,7 +107,7 @@
 
 <!--_menu 作为公共模版分离出去-->
 <aside class="Hui-aside">
-	
+
 	<div class="menu_dropdown bk_2">
 		<dl id="menu-article">
 			<dt class="selected"><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
@@ -349,7 +349,7 @@
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="lib/datatables/1.10.15/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 $('.table-sort').dataTable({
@@ -393,14 +393,14 @@ function article_del(obj,id){
 			error:function(data) {
 				console.log(data.msg);
 			},
-		});		
+		});
 	});
 }
 
 /*资讯-审核*/
 function article_shenhe(obj,id){
 	layer.confirm('审核文章？', {
-		btn: ['通过','不通过','取消'], 
+		btn: ['通过','不通过','取消'],
 		shade: false,
 		closeBtn: 0
 	},
@@ -415,7 +415,7 @@ function article_shenhe(obj,id){
 		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
 		$(obj).remove();
     	layer.msg('未通过', {icon:5,time:1000});
-	});	
+	});
 }
 /*资讯-下架*/
 function article_stop(obj,id){
