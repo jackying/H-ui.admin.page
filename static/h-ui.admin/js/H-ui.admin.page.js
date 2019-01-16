@@ -2,8 +2,8 @@
 * H-ui.admin.page.js v3.1
 * http://www.h-ui.net/
 * Created & Modified by guojunhui
-* Date modified 2017.07.04
-* Copyright 2013-2017 北京颖杰联创科技有限公司 All rights reserved.
+* Date modified 2019.01.11
+* Copyright 2013-2019 北京颖杰联创科技有限公司 All rights reserved.
 * Licensed under MIT license.
 * http://opensource.org/licenses/MIT
 */
@@ -11,7 +11,7 @@
 function Huiasidedisplay(){
 	if($(window).width()>=768){
 		$(".Hui-aside").show()
-	} 
+	}
 }
 /*获取皮肤cookie*/
 function getskincookie(){
@@ -108,7 +108,7 @@ $(function(){
 			Huiasidedisplay();
 		},500);
 	});
-	
+
 	$(".nav-toggle").click(function(){
 		$(".Hui-aside").slideToggle();
 	});
@@ -117,13 +117,13 @@ $(function(){
 			$(".Hui-aside").slideToggle();
 		}
 	});
-	
+
 	/*左侧菜单*/
 	$(".Hui-aside").Huifold({
 		titCell:'.menu_dropdown dl dt',
 		mainCell:'.menu_dropdown dl dd',
-	});	
-		
+	});
+
 	/*换肤*/
 	$("#Hui-skin .dropDown-menu a").click(function(){
 		var v = $(this).attr("data-val");
@@ -132,4 +132,4 @@ $(function(){
 		var hrefRes=hrefStr.substring(0,hrefStr.lastIndexOf('skin/'))+'skin/'+v+'/skin.css';
 		$(window.frames.document).contents().find("#skin").attr("href",hrefRes);
 	});
-}); 
+});

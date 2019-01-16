@@ -3,9 +3,9 @@
 * H-ui.css v3.1.5
 * http://www.h-ui.net/
 * Created & Modified by guojunhui
-* Date modified 2017.07.19
+* Date modified 2019.01.11
 *
-* Copyright 2013-2017 北京颖杰联创科技有限公司 All rights reserved.
+* Copyright 2013-2019 北京颖杰联创科技有限公司 All rights reserved.
 * Licensed under MIT license.
 * http://opensource.org/licenses/MIT
 *
@@ -55,7 +55,7 @@
 	  3.4.5 spinner 控件
 	  3.4.6 邮箱提示
       3.4.7 表单布局
-	  3.4.8 表单验证	  
+	  3.4.8 表单验证
     3.5 按钮
     3.6 图片
     3.7 图标
@@ -3600,28 +3600,28 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 	.modal-dialog {position: relative;margin:10px}
 		.modal-content{position: relative;background-color: #fff;border: 1px solid #999;border: 1px solid rgba(0,0,0,.2);outline: 0;
     		-webkit-background-clip: padding-box;
-					background-clip: padding-box;					
+					background-clip: padding-box;
 			-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
 					box-shadow: 0 3px 9px rgba(0,0,0,.5)}
-		
+
 			.modal-header {min-height: 16.42857143px;padding: 15px;border-bottom: 1px solid #eee; position:relative}
 			.modal-header .close{position:absolute; right:15px; top:15px}
 			.modal-close{position:absolute; right:15px; top:15px;font-size:24px; z-index: 9}
 			a.modal-close:hover{ text-decoration: none}
 			.modal-header h3,.modal-header .modal-title{margin:0; padding:10px 0; font-size:16px}
-			
+
 			.modal-body {position:relative;padding:15px;overflow-y:visible;word-break:break-all}
 				.modal-form {margin-bottom: 0}
-				
+
 			.modal-footer {padding:15px;margin-bottom: 0;text-align: right;background-color: #f5f5f5;border-top: 1px solid #eee;*zoom: 1}
-			
+
 			.modal-footer:before,.modal-footer:after {display: table;content: ""}
 			.modal-footer:after {clear: both}
 			.modal-footer .btn + .btn {margin-left: 5px;margin-bottom: 0}
 			.modal-footer .btn-group .btn + .btn {margin-left: -1px}
 			.modal-footer .btn-block + .btn-block {margin-left: 0}
 		.modal-scrollbar-measure {position: absolute;top: -9999px;width: 50px;height: 50px;overflow: scroll}
-		
+
 		.radius .modal-content{ border-radius:6px}
 		.radius .modal-footer{ border-bottom-left-radius:6px; border-bottom-right-radius:6px}
 /*上下居中*/
@@ -3650,10 +3650,10 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 }
 
 
-	
+
 .modal-alert{position:fixed; right:auto; bottom:auto; width:300px; left:50%;margin-left:-150px; top:50%;margin-top:-30px; z-index:9999;background-color: #fff;border: 1px solid #999;border: 1px solid rgba(0,0,0,.2);outline: 0;
 -webkit-background-clip: padding-box;
-		background-clip: padding-box;					
+		background-clip: padding-box;
 -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
 		box-shadow: 0 3px 9px rgba(0,0,0,.5)}
 
@@ -3670,7 +3670,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 .modal-open .dropdown.open {*z-index: 2050}
 .modal-open .popover {z-index: 2060}
 .modal-open .tooltip {z-index: 2070}
-		
+
 /*	//old 版本
 
 	//当弹出层出现时，隐藏body右侧滚动条
@@ -3695,30 +3695,30 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 	.modal.fade.in{top:50%}
 	//如果弹出层高度大于窗口，弹出窗口距顶0像素
 	.modal.modal-overflow.fade.in{top:0}
-	
+
 	//隐藏body滚动条时，页面偏移
 	.page-overflow{margin-right:16px}
-	
+
 	//弹出层的最外层，全屏，用户响应点击和滚动
 	.modal-scrollable{position:fixed;top:0;right:0;bottom:0;left:0;overflow: auto}
-	
+
 	//弹窗超出屏幕高度时，弹出层替代body右侧滚动条，实现弹出层的整体滚动
 	.modal-overflow .modal-scrollable{overflow-y:scroll}
-	
+
 	//默认遮罩层，全屏黑色
 	.modal-backdrop {position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;z-index:1040;background-color:#000}
 	//解决IE下 遮罩层兼容性
 	* html .modal-backdrop{position:absolute;left:expression(documentElement.scrollLeft + documentElement.clientWidth - this.offsetWidth);top:expression(documentElement.scrollTop + documentElement.clientHeight - this.offsetHeight)}
-	
+
 	//遮罩层失去时，透明度为0
 	.modal-backdrop.fade {opacity:0;filter: alpha(opacity=0)}
-	
+
 	//遮罩层进入 0.7透明度
 	.modal-backdrop,.modal-backdrop.fade.in {opacity: 0.7;filter: alpha(opacity=70)}
-	
+
 	//Ajax加载数据时loading
 	.loading-spinner {position: absolute;top: 50%;left: 50%;margin: -12px 0 0 -12px}
-	
+
 	//弹出层header区
 	//弹出层头部
 	.modal-header {padding: 9px 15px;border-bottom: 1px solid #eee; position:relative}
@@ -3726,7 +3726,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 	.modal-header .close{position:absolute; right:10px; top:10px}
 	//标题
 	.modal-header h3{margin:0; padding:10px 0; font-size:16px}
-	
+
 	//内容不限高度，内填充15px，不满意可自行修改
 	.modal-body {overflow-y:visible;padding: 15px; word-break:break-all}
 	//弹出层表单
@@ -3808,13 +3808,13 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 	.bdsharebuttonbox.Hui-share a.bds_douban{ display:inline-block; background:none;padding-left:0; text-decoration:none; margin:0; margin-right:6px; height:auto; line-height:auto}
 	.bdsharebuttonbox.Hui-share a:hover{ text-decoration:none}
 	.bdsharebuttonbox.Hui-share .share-text{ display:inline-block; margin-right:6px; color:#999; cursor:default;float:left}
-	
+
 	.bdsharebuttonbox.bdshare-button-style0-16.Hui-share a,
 	.bdsharebuttonbox.bdshare-button-style0-16.Hui-share .share-text,
 	.bdsharebuttonbox.bdshare-button-style0-16.Hui-share .Hui-iconfont{line-height:16px}
 	.bdsharebuttonbox.bdshare-button-style0-16.Hui-share .share-text,
 	.bdsharebuttonbox.bdshare-button-style0-16.Hui-share .Hui-iconfont{font-size:16px}
-	
+
 	.bdsharebuttonbox.bdshare-button-style0-24.Hui-share a,
 	.bdsharebuttonbox.bdshare-button-style0-24.Hui-share .share-text,
 	.bdsharebuttonbox.bdshare-button-style0-24.Hui-share .Hui-iconfont{line-height:24px}
@@ -3935,17 +3935,17 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 	.Huitags-wraper{border:solid 1px #dedede; padding:0 10px}
 		.Hui-tags-editor,
 		.Huitags-editor{position:relative; padding:10px 0 10px 24px;min-height:20px}
-		
+
 		.Hui-tags-editor .Hui-tags-icon,
 		.Huitags-editor .Huitags-icon{position:absolute; left:0; top:11px; font-size:14px; color:#666}
-		
+
 			.Hui-tags-token,
 			.Huitags-token{color:#aaa; float:left; font-size:12px; height:20px; line-height:20px; margin-right:8px; padding:0 1px; white-space:nowrap; cursor:pointer}
 			.Hui-tags-token:before,
 			.Huitags-token:before{content:"#"}
 			.Hui-tags-token:hover,
 			.Huitags-token:hover{text-decoration:line-through}
-			
+
 			.Hui-tags-iptwrap{position:relative; float:left}
 			.Huitags-input-wraper{}
 				.Hui-tags-input
@@ -3953,20 +3953,20 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 				.Huitags-input{}
 				.Hui-tags-label,
 				.Huitags-label{position:absolute; top:0; left:2px; width:240px; height:20px; line-height:20px; font-size:14px; overflow:hidden; z-index:1; color:#ccc}
-				
+
 			.Hui-tags-list,
 			.Huitags-list{padding:0 0 10px 0;}
-			
+
 		.Hui-notag,
 		.Huitags-notag{font-size:12px}
-		
+
 		.Hui-tags-has span,
 		.Huitags-has span{cursor:pointer; font-size:12px; white-space:nowrap; margin-right:10px}
-	
+
 	/*4.19.2 标签混排效果
 		Name:			mod_tags
 		Sample:			<div class="pd-10 tags"><a href="http://www.h-ui.net/">H-ui前端框架</a>……</div>
-	
+
 	*/
 	.tags a{height:26px; line-height:26px;padding-right:6px}
 		.tags0{}
@@ -3980,7 +3980,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 		.tags8{color:#F06; font-weight:bold}
 		.tags9{color:#C00; font-weight:bold;font-size:16px}
 	.tags a:hover{color:#F00; text-decoration:underline}
-	
+
 	/*4.19.3 tag云标签*/
 	#tagyun {position:relative}
 	#tagyun a {position:absolute;top:0px;left:0px;font-weight:bold;text-decoration:none;padding:3px 6px}
@@ -4343,7 +4343,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 		<dl>
 			<dt class="dt">选择区域：</dt>
 			<dd class="dd">
-				<a href="#" title="北京市">北京市</a>  
+				<a href="#" title="北京市">北京市</a>
             </dd>
 		</dl>
 	</div>
